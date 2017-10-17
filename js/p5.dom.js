@@ -1051,7 +1051,7 @@
         constraints = {video: useVideo, audio: useAudio};
       }
 
-      navigator.getUserMedia(constraints, function(stream) {
+      navigator.mediaDevices.getUserMedia(constraints, function(stream) {
         elt.src = window.URL.createObjectURL(stream);
           if (cb) {
             cb(stream);
