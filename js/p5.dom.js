@@ -1051,12 +1051,23 @@
         constraints = {video: useVideo, audio: useAudio};
       }
 
-      navigator.mediaDevices.getUserMedia(constraints, function(stream) {
-        elt.src = window.URL.createObjectURL(stream);
-          if (cb) {
-            cb(stream);
-          }
-      }, function(e) { console.log(e); });
+ navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+.then(function(stream) {
+  var video = document.querySelector('video');
+  // Older browsers may not have srcObject
+  if ("srcObject" in video) {
+    video.srcObject = stream;
+  } else {
+    // Avoid using this in new browsers, as it is going away.
+    video.src = window.URL.createObjectURL(stream);
+  }
+  video.onloadedmetadata = function(e) {
+    video.play();
+  };
+})
+.catch(function(err) {
+  console.log(err.name + ": " + err.message);
+});
     } else {
       throw 'getUserMedia not supported in this browser';
     }
