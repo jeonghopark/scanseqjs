@@ -9,10 +9,10 @@ var linesMovSpeed = [lineNum];
 var linesTrigger = [lineNum];
 var linesOldSum = [lineNum];
 
-var linesMoving = [lineNum];
+var waveMoving = [lineNum];
 var waveMovingFactor = [lineNum];
 var waveMovingSpeed = [lineNum];
-var waveMovingDec = [];
+var waveMovingDec = [lineNum];
 
 var polySynth;
 var linesToneTrigger = [lineNum];
@@ -117,7 +117,7 @@ function draw() {
         } 
 
         if (linesXPos[i] > (width + startPostion) * 0.5 && linesToneTrigger[i] === false) {
-            linesMoving[i] = true;
+            waveMoving[i] = true;
             linesTrigger[i] = true;
             linesToneTrigger[i] = true;
             if (linesToneTrigger[i] === true) {
@@ -152,9 +152,9 @@ function draw() {
     curveVertex((width + startPostion) * 0.5, (0.0) * height / lineNum);
     curveVertex((width + startPostion) * 0.5, (0.0) * height / lineNum);
     for (var i = 0; i < lineNum; i++) {
-        if (linesMoving[i] === true) {
+        if (waveMoving[i] === true) {
             waveMovingSpeed[i] = 0.7;
-            linesMoving[i] = false;
+            waveMoving[i] = false;
             waveMovingFactor[i] = 0.0;
             waveMovingDec[i] = 0.9;
         }
