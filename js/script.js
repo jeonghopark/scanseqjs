@@ -49,7 +49,6 @@ function setup() {
     };
     capture = createCapture(constraints);
     
-
     // capture = createCapture(VIDEO);
     capture.size(320, 240);
     // capture.hide();
