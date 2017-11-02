@@ -24,11 +24,8 @@ var noteListWhole = [
 "A#4", "G#4", "D5", "C5", "F#5", "E5", "A#5", "G#5", "C6", "D6"
 ];
 
-
 var cameraScreenRatio;
 
-function setup() {
-}
 
 function setup() {
 
