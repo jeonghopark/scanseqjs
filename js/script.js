@@ -29,23 +29,22 @@ var cameraScreenRatio;
 
 function setup() {
 
-    var reverb = new Tone.JCReverb(0.9).connect(Tone.Master);
-    var delay = new Tone.FeedbackDelay(0.6); 
+    let reverb = new Tone.JCReverb(0.9).connect(Tone.Master);
+    let delay = new Tone.FeedbackDelay(0.6); 
 
     polySynth = new Tone.PolySynth(6, Tone.Synth);
-    var vol = new Tone.Volume(-28);
+    let vol = new Tone.Volume(-28);
     // polySynth.chain(delay, reverb);
     polySynth.chain(vol, reverb).chain(vol, delay).chain(vol, Tone.Master);
 
     createCanvas(1100, 600);
-    var constraints = {
+    let constraints = {
         audio: false,
         video: {
             facingMode: "user"
         }
     };
     capture = createCapture(constraints);
-    
     // capture = createCapture(VIDEO);
     capture.size(320, 240);
     // capture.hide();
@@ -55,54 +54,94 @@ function setup() {
 
     startPostion = 80 * cameraScreenRatio;
 
-    for (var i = 0; i < lineNum; i++) {
-        linesXPos[i] = startPostion;
-        linesMovSpeed[i] = 0.0;
-        linesTrigger[i] = false;
-        linesToneTrigger[i] = false;
-        linesOldSum[i] = 0.0;
-        waveMovingFactor[i] = 0.0;
-        waveMovingSpeed[i] = 0.0;
-        waveMovingDec[i] = 0.0;
+    for (let i = 0; i < lineNum; i++) {
+        linesXPos.push(startPostion);
+        linesMovSpeed.push(0.0);
+        linesTrigger.push(false);
+        linesToneTrigger.push(false);
+        linesOldSum.push(0.0);
+        waveMovingFactor.push(0.0);
+        waveMovingSpeed.push(0.0);
+        waveMovingDec.push(0.0);
     }
 }
 
 
 function draw() {
+    
     background(0);
 
-    capture.loadPixels();
+    trigger();
+    lineColorCapture();
+
+    pathLineDraw();
+    ellipseMoving();
+    waveLineDraw();
+
+    push();
+    stroke(255, 70);
+    strokeWeight(1);
+    line(startPostion, 0, startPostion, height);
+    line((width + startPostion) * 0.5, 0, (width + startPostion) * 0.5, height);
+    pop();
+
+    push();
+    translate(0, 0);
+    image(buffImageUpdate(capture), 0, 0, startPostion, 240 * cameraScreenRatio);
+    pop();
+
+}
+
+
+
+var buffImageUpdate = function(_capture){
+
+    _capture.loadPixels();
     buff.loadPixels();
 
-    for (var y = 0; y < capture.height; y++) {
-        for (var x = 0; x < capture.width; x++) {
+    for (let y = 0; y < _capture.height; y++) {
+        for (let x = 0; x < _capture.width; x++) {
             if (x < 80) {
-                var i = y * capture.width + (capture.width - 1 - x);
-                var _c = [capture.pixels[i * 4 + 0], capture.pixels[i * 4 + 1], capture.pixels[i * 4 + 2], 255];
+                let i = y * _capture.width + (_capture.width - 1 - x);
+                let _c = [_capture.pixels[i * 4 + 0], _capture.pixels[i * 4 + 1], _capture.pixels[i * 4 + 2], 255];
                 buff.set(x, y, _c);
             }
         }
     }
 
-    for(var i=0; i<lineNum; i++){
-        var _index = (i + 0.5) * capture.height / lineNum * capture.width - 80;
-        linesColor[i] = [capture.pixels[_index * 4 + 0], capture.pixels[_index * 4 + 1], capture.pixels[_index * 4 + 2], 255];
-    }
-
     buff.updatePixels();
 
+    return buff;
+};
 
-    for (var i = 0; i < lineNum; i++) {
+
+
+function lineColorCapture(){
+    for (let i = 0; i < lineNum; i++) {
+        let _index = (i + 0.5) * capture.height / lineNum * capture.width - 80;
+        linesColor[i] = [capture.pixels[_index * 4 + 0], capture.pixels[_index * 4 + 1], capture.pixels[_index * 4 + 2], 255];
+    }    
+}
+
+
+function pathLineDraw(){
+
+    push();
+    for (let i = 0; i < linesColor.length; i++) {
         stroke(linesColor[i]);
         strokeWeight(height / lineNum * 0.5);
         line(80 * cameraScreenRatio, (i + 0.5) * height / lineNum, width, (i + 0.5) * height / lineNum);
+    }
+    pop();
 
-        
-        fill((255-linesColor[i][0],255-linesColor[i][1],255-linesColor[i][2]));
-        noStroke();
+}
 
-        var _colorValueSum = (linesColor[i][0] + linesColor[i][1] + linesColor[i][2]) / 3.0;
-        var _diffColorValue = abs(_colorValueSum - linesOldSum[i])
+
+function trigger(){
+
+    for (let i = 0; i < linesColor.length; i++) {
+        let _colorValueSum = (linesColor[i][0] + linesColor[i][1] + linesColor[i][2]) / 3.0;
+        let _diffColorValue = abs(_colorValueSum - linesOldSum[i])
         if (_diffColorValue > 40) {
             linesTrigger[i] = true;
             linesOldSum[i] = _colorValueSum;
@@ -135,20 +174,37 @@ function draw() {
             linesMovSpeed[i] = 0.0;
         }
         
-        linesXPos[i] = linesXPos[i] + linesMovSpeed[i];
-        ellipse(linesXPos[i], (i + 0.5) * height / lineNum, 10, 10);
-
     }
 
+}
+
+
+
+function ellipseMoving(){ 
+    
+    push();
+    noStroke();
+    for (let i = 0; i < linesColor.length; i++) {
+        linesXPos[i] = linesXPos[i] + linesMovSpeed[i];
+        fill((255-linesColor[i][0],255-linesColor[i][1],255-linesColor[i][2]));
+        ellipse(linesXPos[i], (i + 0.5) * height / lineNum, 10, 10);
+    }
+    pop();
+}
+
+
+
+function waveLineDraw(){
 
     push();
     stroke(255, 180);
     strokeWeight(2);
     noFill();
+
     beginShape();
     curveVertex((width + startPostion) * 0.5, (0.0) * height / lineNum);
     curveVertex((width + startPostion) * 0.5, (0.0) * height / lineNum);
-    for (var i = 0; i < lineNum; i++) {
+    for (let i = 0; i < lineNum; i++) {
         if (waveMoving[i] === true) {
             waveMovingSpeed[i] = 0.7;
             waveMoving[i] = false;
@@ -172,20 +228,9 @@ function draw() {
     }
     curveVertex((width + startPostion) * 0.5, (lineNum + 0.0) * height / lineNum);
     curveVertex((width + startPostion) * 0.5, (lineNum + 0.0) * height / lineNum);
+    
     endShape();
-    pop();
-
-
-    push();
-    stroke(255, 70);
-    strokeWeight(1);
-    // line(startPostion, 0, startPostion, height);
-    line((width + startPostion) * 0.5, 0, (width + startPostion) * 0.5, height);
-    pop();
-
-    push();
-    translate(0, 0);
-    image(buff, 0, 0, startPostion, 240 * cameraScreenRatio);
+    
     pop();
 
 }
