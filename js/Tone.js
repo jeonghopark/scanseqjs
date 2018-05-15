@@ -1275,6 +1275,12 @@
 	        var options = Tone.defaults(arguments, ['context'], Tone.Context);
 	        if (!options.context) {
 	            options.context = new window.AudioContext();
+
+	            // WebAudio ???
+	            if (options.context.state !== 'running') {
+        			options.context.resume();
+	    		}
+
 	            if (!options.context) {
 	                throw new Error('could not create AudioContext. Possibly too many AudioContexts running already.');
 	            }
