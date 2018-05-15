@@ -27,6 +27,17 @@
             display: none;
         }
     </style>
+
+    <!-- ??? WebAudio  -->
+    <style type="text/css">
+        
+        if (Tone.context.state !== 'running') {
+            Tone.context.resume();
+        }
+        
+    </style>
+
+
 </head>
 
 <body>
