@@ -27,7 +27,14 @@ var noteListWhole = [
 var cameraScreenRatio;
 
 
+function preload(){
+    
+}
+
+
 function setup() {
+
+    createCanvas(1100, 600);
 
     let reverb = new Tone.JCReverb(0.9).connect(Tone.Master);
     let delay = new Tone.FeedbackDelay(0.6); 
@@ -37,13 +44,15 @@ function setup() {
     // polySynth.chain(delay, reverb);
     polySynth.chain(vol, reverb).chain(vol, delay).chain(vol, Tone.Master);
 
-    createCanvas(1100, 600);
+
+
     let constraints = {
         audio: false,
         video: {
             facingMode: "user"
         }
     };
+
     capture = createCapture(constraints);
     // capture = createCapture(VIDEO);
     capture.size(320, 240);
