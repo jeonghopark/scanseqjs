@@ -28,7 +28,7 @@ var cameraScreenRatio;
 
 
 function preload(){
-    
+
 }
 
 
@@ -43,7 +43,6 @@ function setup() {
     let vol = new Tone.Volume(-28);
     // polySynth.chain(delay, reverb);
     polySynth.chain(vol, reverb).chain(vol, delay).chain(vol, Tone.Master);
-
 
 
     let constraints = {
