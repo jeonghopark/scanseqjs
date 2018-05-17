@@ -38,14 +38,18 @@
 
 <!-- ??? WebAudio  -->
 <script type="text/javascript">
-    
-//    window.onload = function() {
-//      var context = new AudioContext();
-//    }
 
-//    if (Tone.context.state !== 'running') {
-//        Tone.context.resume();
-//    }
+    // Existing code unchanged.
+    window.onload = function() {
+      var context = new AudioContext();
+    }
+
+    // One-liner to resume playback when user interacted with the page.
+    // document.querySelector('button').addEventListener('click', function() {
+    //   context.resume().then(() => {
+    //     console.log('Playback resumed successfully');
+    //   });
+    // });
 
 </script>
 
