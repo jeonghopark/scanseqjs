@@ -1,0 +1,183 @@
+body
+{
+    background: #000;
+    color: #ccc;
+    width: 860px;
+    /*height: auto;*/
+    /*margin: 0 auto;*/
+    margin: 50px auto 100px auto;
+    /*text-align: center;*/
+    font-size: 13px;
+    font-weight: 500;
+    /*font-family: "Lucida Console", Monaco, monospace;*/
+    font-family: "Raleway", Monaco, sans-serif;
+    line-height: 18px;
+}
+
+a:link 
+{
+    color:#68BAB0;
+    text-decoration: none;
+    font-size: 11px;
+}
+a:visited 
+{
+    color:#FFA099;
+    font-size: 11px;
+}
+a:hover 
+{
+    color:#08AF99;
+    font-size: 11px;
+}
+a:active 
+{
+    color:#0000FF;
+    font-size: 11px;
+}
+
+
+#footInfo
+{
+	bottom : 0px;
+	max-width: 790px;
+    margin: 20px 0px 5px 0px;
+}
+
+
+#container
+{
+/*     position: static; */
+	/*max-width: 960px;*/
+    width: auto;
+    height: auto;
+    margin: 0 auto;
+    padding: 0px 0px 0px 0px;
+    border  : solid 0px #00ff00;
+}
+
+#navigation
+{
+    position: static;
+	max-width: 790px;
+/*     height: auto; */
+    /*margin: 30px 10px 10px 10px;*/
+    /*padding: 20px 10px 0px 20px;*/
+    border  : solid 1px #F1F1F1;    
+    background: #ffffff;    
+}
+
+
+
+
+.img
+{
+	max-width: 100%;
+    height: auto;
+
+}
+
+
+.postImg
+{
+	max-width: 100%;
+/* 	width : 500px; */
+    max-height : 200px;
+
+}
+
+
+.cell
+{
+/*     position  : static; */
+	width: auto;
+    height: auto;
+    float: left;
+    margin: 0px 0px 2px 10px;
+}
+
+.cellHead
+{
+/*     position  : static; */
+	width: auto;
+    height: auto;
+    float: left;
+    margin: 0px 0px 10px 10px;
+}
+
+.thumb
+{
+    /*position  : static;*/
+    width: 500px;
+    margin: 0px;
+    float: left;
+    background: #000;
+    border  : solid 0px #ff0000;    
+}
+
+.thumbtag
+{
+    position  : absolute;
+	max: 100%;
+    width: 62px;
+    margin: 0px;
+    border  : solid 0px #ff0000;    
+}
+
+
+.textRight
+{
+/*     position  : relative; */
+    float: left;
+    left : 0px;
+    width: 300px;
+    height: auto;
+	max-width: auto;
+	min-width: 140px;
+	
+/*     height: 154px; */
+    padding: 5px 0px 30px 10px;
+    border  : solid 0px #ff0000;    
+    line-height : 1.2em;
+}
+
+.naviRight
+{
+/*     position  : relative; */
+    float: left;
+    left : 0px;
+    width: 300px;
+    height: auto;
+	max-width: auto;
+	min-width: 140px;
+	
+/*     height: 154px; */
+    padding: 0px 0px 30px 10px;
+    border  : solid 0px #ff0000;    
+    line-height : 1.2em;
+}
+
+
+.text
+{
+    /*position  : relative;*/
+    float: left;
+    width: 300px;
+	max-width: 100%;
+	min-width: 100px;
+    height: auto;
+/*     height: 195px; */
+    padding: 7px 0px 0px 10px;
+    border  : solid 0px #ff0000;    
+}
+
+.title
+{
+    font-weight: normal;
+}
+
+.subTitle
+{
+    font-weight: normal;
+    font-size: 11px;
+}
