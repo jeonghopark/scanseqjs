@@ -45,15 +45,15 @@ function setup() {
     polySynth.chain(vol, reverb).chain(vol, delay).chain(vol, Tone.Master);
 
 
-    let constraints = {
-        audio: false,
-        video: {
-            facingMode: "user"
-        }
-    };
-
-    capture = createCapture(constraints);
-    // capture = createCapture(VIDEO);
+    // let constraints = {
+    //     audio: false,
+    //     video: {
+    //         facingMode: "user"
+    //     }
+    // };
+    // capture = createCapture(constraints);
+    
+    capture = createCapture(VIDEO);
     capture.size(320, 240);
     // capture.hide();
     cameraScreenRatio = 600 / 240;
