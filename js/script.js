@@ -165,7 +165,7 @@ function trigger(){
             linesTrigger[i] = true;
             linesToneTrigger[i] = true;
             if (linesToneTrigger[i] === true) {
-                polySynth.triggerAttackRelease(noteListWhole[19-i], "8t");
+                polySynth.triggerAttackRelease(noteListWhole[19-i], "16t");
             }
         }
 
