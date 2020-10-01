@@ -36,14 +36,17 @@ function setup() {
 
     createCanvas(1100, 600);
 
-    let reverb = new Tone.JCReverb(0.9).connect(Tone.Master);
-    let delay = new Tone.FeedbackDelay(0.6); 
+    let reverb = new Tone.JCReverb(0.2);
+    let delay = new Tone.FeedbackDelay("16n", 0.4); 
+    
+    polySynth = new Tone.PolySynth(Tone.Synth, {
+            oscillator: {
+                partials: [0, 2, 3, 4],
+            }
+        }).toDestination();
 
-    polySynth = new Tone.PolySynth(6, Tone.Synth);
     let vol = new Tone.Volume(-28);
-    // polySynth.chain(delay, reverb);
-    polySynth.chain(vol, reverb).chain(vol, delay).chain(vol, Tone.Master);
-
+    polySynth.chain(vol, delay, reverb, Tone.Destination);
 
     // let constraints = {
     //     audio: false,
@@ -165,7 +168,8 @@ function trigger(){
             linesTrigger[i] = true;
             linesToneTrigger[i] = true;
             if (linesToneTrigger[i] === true) {
-                polySynth.triggerAttackRelease(noteListWhole[19-i], "16t");
+                now = Tone.now();
+                polySynth.triggerAttackRelease(noteListWhole[19-i], "32t", now);
             }
         }
 
