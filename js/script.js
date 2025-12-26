@@ -26,6 +26,11 @@ var noteListWhole = [
 
 var cameraScreenRatio;
 
+// User interaction controls
+var isPaused = false;
+var isMuted = false;
+var showHelp = false;
+
 
 function preload(){
 
@@ -82,12 +87,30 @@ function draw() {
     
     background(0);
 
-    trigger();
-    lineColorCapture();
+    // Skip processing when paused
+    if (!isPaused) {
+        trigger();
+        lineColorCapture();
+    }
 
     pathLineDraw();
     ellipseMoving();
     waveLineDraw();
+
+    // Draw help overlay
+    if (showHelp) {
+        drawHelpOverlay();
+    }
+
+    // Draw pause indicator
+    if (isPaused) {
+        drawPauseIndicator();
+    }
+
+    // Draw mute indicator
+    if (isMuted) {
+        drawMuteIndicator();
+    }
 
     push();
     stroke(255, 70);
@@ -245,4 +268,83 @@ function waveLineDraw(){
     
     pop();
 
+}
+
+
+// Keyboard controls
+function keyPressed() {
+    // Space bar - toggle pause
+    if (keyCode === 32) {
+        isPaused = !isPaused;
+        return false; // Prevent default browser behavior
+    }
+    
+    // M key - toggle mute
+    if (key === 'm' || key === 'M') {
+        isMuted = !isMuted;
+        if (isMuted) {
+            Tone.Destination.mute = true;
+        } else {
+            Tone.Destination.mute = false;
+        }
+    }
+    
+    // H key - toggle help overlay
+    if (key === 'h' || key === 'H') {
+        showHelp = !showHelp;
+    }
+}
+
+
+// Draw help overlay with keyboard shortcuts
+function drawHelpOverlay() {
+    push();
+    fill(0, 0, 0, 180);
+    noStroke();
+    rectMode(CENTER);
+    rect(width / 2, height / 2, 280, 140, 10);
+    
+    fill(255);
+    textAlign(CENTER, CENTER);
+    textSize(16);
+    text("Keyboard Shortcuts", width / 2, height / 2 - 45);
+    
+    textSize(13);
+    textAlign(LEFT, CENTER);
+    text("SPACE", width / 2 - 120, height / 2 - 10);
+    text("M", width / 2 - 120, height / 2 + 15);
+    text("H", width / 2 - 120, height / 2 + 40);
+    
+    textAlign(RIGHT, CENTER);
+    text("Pause / Resume", width / 2 + 120, height / 2 - 10);
+    text("Mute / Unmute", width / 2 + 120, height / 2 + 15);
+    text("Toggle Help", width / 2 + 120, height / 2 + 40);
+    pop();
+}
+
+
+// Draw pause indicator
+function drawPauseIndicator() {
+    push();
+    fill(255, 255, 255, 200);
+    noStroke();
+    rectMode(CENTER);
+    rect(width - 50, 30, 12, 30, 2);
+    rect(width - 30, 30, 12, 30, 2);
+    
+    textAlign(CENTER, TOP);
+    textSize(11);
+    text("PAUSED", width - 40, 50);
+    pop();
+}
+
+
+// Draw mute indicator
+function drawMuteIndicator() {
+    push();
+    fill(255, 100, 100, 200);
+    textAlign(LEFT, TOP);
+    textSize(11);
+    text("MUTED", 10, 10);
+    pop();
 }
