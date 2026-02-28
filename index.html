@@ -25,19 +25,65 @@
     video {
         display: none;
     }
+    #title-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 12px 20px;
+        box-sizing: border-box;
+        pointer-events: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        font-family: monospace;
+        letter-spacing: 0.06em;
+    }
+    #title-bar span {
+        color: rgba(255, 255, 255, 0.95);
+        font-size: 15px;
+        font-weight: bold;
+    }
+    #title-bar a {
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 13px;
+        text-decoration: none;
+        pointer-events: all;
+    }
+    #title-bar a:hover {
+        color: rgba(255, 255, 255, 1.0);
+    }
+    #privacy-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 6px 20px;
+        background: rgba(0, 0, 0, 0.6);
+        color: rgba(255, 255, 255, 0.35);
+        font-family: monospace;
+        font-size: 11px;
+        text-align: center;
+        letter-spacing: 0.03em;
+        box-sizing: border-box;
+        pointer-events: none;
+    }
 </style>
 
 </head>
 
 <body>
     
-    <a href="https://github.com/jeonghopark/scanseqjs"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://github.blog/wp-content/uploads/2008/12/forkme_left_white_ffffff.png" alt="Fork me on GitHub" data-canonical-src="https://github.blog/wp-content/uploads/2008/12/forkme_left_white_ffffff.png"></a>
+    <a href="https://github.com/jeonghopark/scanseqjs" target="_blank" rel="noopener noreferrer"><img style="position: absolute; top: 0; left: 0; border: 0;" src="forkme.png" alt="Fork me on GitHub"></a>
 
-    <script type="text/javascript" id="cookieinfo"
-        src="js/cookieinfo.min.js"
-        data-linkmsg="Privacy Policy"
-        data-moreinfo="./privacypolicy.html">
-    </script>
+    <div id="title-bar">
+        <span>ScanSeq JS</span>
+        <a href="https://experiments.withgoogle.com/chrome/scan-sequencer" target="_blank" rel="noopener noreferrer">Google Experiments ↗</a>
+    </div>
+
+    <div id="privacy-bar">Your camera feed is processed entirely in your browser. No data is stored or transmitted to any server.</div>
+
 
 
 </body>
