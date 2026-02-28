@@ -69,6 +69,23 @@
         box-sizing: border-box;
         pointer-events: none;
     }
+    #face-info {
+        position: fixed;
+        top: 12px;
+        right: 20px;
+        font-family: monospace;
+        font-size: 11px;
+        text-align: right;
+        pointer-events: none;
+        z-index: 10;
+        line-height: 1.6em;
+    }
+    #face-info .scale-name {
+        color: rgba(255, 255, 255, 0.85);
+    }
+    #face-info .face-values {
+        color: rgba(255, 255, 255, 0.35);
+    }
 </style>
 
 </head>
@@ -83,6 +100,11 @@
     </div>
 
     <div id="privacy-bar">Your camera feed is processed entirely in your browser. No data is stored or transmitted to any server.</div>
+
+    <div id="face-info">
+        <div class="scale-name" id="face-scale"></div>
+        <div class="face-values" id="face-values"></div>
+    </div>
 
 
 
@@ -107,5 +129,6 @@
 </script>
 
 <script type="text/javascript" src="js/Tone.js"></script>
+<script type="module" src="js/face.js"></script>
 
 </html>

@@ -19,10 +19,45 @@ var linesToneTrigger = [lineNum];
 
 var startPostion;
 
+// Default scale (original)
 var noteListWhole = [
 "C3", "E3", "D3", "G#4", "F#4", "C4", "A#4", "D4", "F#4", "E4",
 "A#4", "G#4", "D5", "C5", "F#5", "E5", "A#5", "G#5", "C6", "D6"
 ];
+
+// Happy → C major pentatonic (bright, open)
+var noteListHappy = [
+"C3", "D3", "E3", "G3", "A3", "C4", "D4", "E4", "G4", "A4",
+"C5", "D5", "E5", "G5", "A5", "C6", "D6", "E6", "G6", "A6"
+];
+
+// Sad → C natural minor (dark, melancholic)
+var noteListSad = [
+"C3", "D3", "D#3", "F3", "G3", "G#3", "A#3", "C4", "D4", "D#4",
+"F4", "G4", "G#4", "A#4", "C5", "D5", "D#5", "F5", "G5", "G#5"
+];
+
+// Surprised → whole tone scale (dreamlike, floating)
+var noteListSurprised = [
+"C3", "D3", "E3", "F#3", "G#3", "A#3", "C4", "D4", "E4", "F#4",
+"G#4", "A#4", "C5", "D5", "E5", "F#5", "G#5", "A#5", "C6", "D6"
+];
+
+function getActiveNoteList() {
+    if (!window.faceState || !window.faceState.ready) return noteListWhole;
+    if (window.faceState.happy > 0.35)     return noteListHappy;
+    if (window.faceState.sad > 0.25)       return noteListSad;
+    if (window.faceState.surprised > 0.45) return noteListSurprised;
+    return noteListWhole;
+}
+
+function getActiveScaleName() {
+    if (!window.faceState || !window.faceState.ready) return "— (detecting...)";
+    if (window.faceState.happy > 0.35)     return "major pentatonic";
+    if (window.faceState.sad > 0.25)       return "natural minor";
+    if (window.faceState.surprised > 0.45) return "whole tone";
+    return "default";
+}
 
 var cameraScreenRatio;
 
@@ -35,6 +70,9 @@ function preload(){
 function setup() {
 
     createCanvas(1100, 600);
+
+    // Resume AudioContext on first user interaction (browser policy)
+    document.addEventListener("click", function() { Tone.start(); }, { once: true });
 
     let reverb = new Tone.JCReverb(0.2);
     let delay = new Tone.FeedbackDelay("16n", 0.4); 
@@ -60,6 +98,11 @@ function setup() {
     capture.size(320, 240);
     // capture.hide();
     cameraScreenRatio = 600 / 240;
+
+    // Register video element with MediaPipe face detection
+    capture.elt.addEventListener("loadeddata", function() {
+        if (window.faceAPI) window.faceAPI.setVideoElement(capture.elt);
+    });
 
     buff = createImage(80, 240);
 
@@ -100,6 +143,8 @@ function draw() {
     translate(0, 0);
     image(buffImageUpdate(capture), 0, 0, startPostion, 240 * cameraScreenRatio);
     pop();
+
+    scaleNameDraw();
 
 }
 
@@ -169,7 +214,7 @@ function trigger(){
             linesToneTrigger[i] = true;
             if (linesToneTrigger[i] === true) {
                 now = Tone.now();
-                polySynth.triggerAttackRelease(noteListWhole[19-i], "32t", now);
+                polySynth.triggerAttackRelease(getActiveNoteList()[19-i], "32t", now);
             }
         }
 
@@ -240,9 +285,27 @@ function waveLineDraw(){
     }
     curveVertex((width + startPostion) * 0.5, (lineNum + 0.0) * height / lineNum);
     curveVertex((width + startPostion) * 0.5, (lineNum + 0.0) * height / lineNum);
-    
+
     endShape();
-    
+
     pop();
 
+}
+
+
+function scaleNameDraw() {
+    let scaleEl = document.getElementById("face-scale");
+    let valuesEl = document.getElementById("face-values");
+    if (!scaleEl || !valuesEl) return;
+
+    scaleEl.textContent = "scale: " + getActiveScaleName();
+
+    if (window.faceState && window.faceState.ready) {
+        valuesEl.innerHTML =
+            "happy:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + window.faceState.happy.toFixed(2) + "<br>" +
+            "sad:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + window.faceState.sad.toFixed(2) + "<br>" +
+            "surprised:&nbsp;" + window.faceState.surprised.toFixed(2);
+    } else {
+        valuesEl.textContent = "";
+    }
 }
